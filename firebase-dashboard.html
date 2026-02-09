@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Firestore Dashboard</title>
+    <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .dashboard { margin: 20px; }
+        .listing { border: 1px solid #ddd; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Food Listings Dashboard</h1>
+        <div id="food-listings"></div>
+        <script>
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+                apiKey: "YOUR_API_KEY",
+                authDomain: "YOUR_AUTH_DOMAIN",
+                projectId: "YOUR_PROJECT_ID",
+                storageBucket: "YOUR_STORAGE_BUCKET",
+                messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+                appId: "YOUR_APP_ID"
+            };
+            // Initialize Firebase
+            const app = firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore(app);
+
+            // Fetch food listings
+            db.collection("foodListings").get().then((querySnapshot) => {
+                const listingsDiv = document.getElementById('food-listings');
+                querySnapshot.forEach((doc) => {
+                    const listing = doc.data();
+                    const element = document.createElement('div');
+                    element.className = 'listing';
+                    element.innerText = `Name: ${listing.name}, Status: ${listing.status}`;
+                    listingsDiv.appendChild(element);
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>
